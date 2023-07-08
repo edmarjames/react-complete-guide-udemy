@@ -19,7 +19,7 @@ export default function InputForm({
     };
     const handleSetExpectedInterest = (e) => {
         const value = e.target.value;
-        setExpectedReturn(value);
+        setExpectedReturn(+value);
     };
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,7 +34,7 @@ export default function InputForm({
                     <input 
                         type="number" 
                         id="current-savings" 
-                        onChange={(e) => setCurrentSavings(e.target.value)}    
+                        onChange={(e) => setCurrentSavings(+e.target.value)}    
                         value={currentSavings}
                     />
                 </p>
@@ -43,7 +43,7 @@ export default function InputForm({
                     <input 
                         type="number" 
                         id="yearly-contribution" 
-                        onChange={(e) => setYearlyContribution(e.target.value)}    
+                        onChange={(e) => setYearlyContribution(+e.target.value)}    
                         value={yearlyContribution}                    
                     />
                 </p>
@@ -65,7 +65,7 @@ export default function InputForm({
                     <input 
                         type="number" 
                         id="duration" 
-                        onChange={(e) => setDuration(e.target.value)} 
+                        onChange={(e) => setDuration(+e.target.value)} 
                         value={duration}
                     />
                 </p>

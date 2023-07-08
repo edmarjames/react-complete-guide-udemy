@@ -42,7 +42,7 @@ function App() {
                     initialInvestment={initialInvestment}
                 />
             ) : (
-                <h6 style={{ textAlign: 'center' }}>No investment calculated yet.</h6>
+                <h5 style={{ textAlign: 'center' }}>No investment calculated yet.</h5>
             )}
         </div>
     );
