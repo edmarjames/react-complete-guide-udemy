@@ -1,6 +1,14 @@
 import React from 'react'
 
-export default function ResultsTable() {
+export default function ResultsTable({ results, initialInvestment }) {
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
     return (
         <table className="result">
             <thead>
@@ -13,13 +21,15 @@ export default function ResultsTable() {
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>YEAR NUMBER</td>
-                <td>TOTAL SAVINGS END OF YEAR</td>
-                <td>INTEREST GAINED IN YEAR</td>
-                <td>TOTAL INTEREST GAINED</td>
-                <td>TOTAL INVESTED CAPITAL</td>
-            </tr>
+            {results?.map(data => (
+                <tr key={data.year}>
+                    <td>{data.year}</td>
+                    <td>{formatter.format(data.savingsEndOfYear)}</td>
+                    <td>{formatter.format(data.yearlyInterest)}</td>
+                    <td>{formatter.format(data.savingsEndOfYear - initialInvestment - data.yearlyContribution * data.year)}</td>
+                    <td>{formatter.format(initialInvestment + data.yearlyContribution * data.year)}</td>
+                </tr>
+            ))}
             </tbody>
         </table>
     )

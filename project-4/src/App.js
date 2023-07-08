@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Header from './components/Header';
 import InputForm from './components/InputForm';
@@ -6,71 +6,44 @@ import ResultsTable from './components/ResultsTable';
 
 function App() {
 
-    const [currentSavings, setCurrentSavings] = useState('');
-    const [yearlyContribution, setYearlyContribution] = useState('');
-    const [expectedReturn, setExpectedReturn] = useState('');
-    const [duration, setDuration] = useState('');
+    const [results, setResults] = useState(null);
+    const [initialInvestment, setInitialInvestment] = useState(0);
 
-    const handleReset = () => {
-        setCurrentSavings('');
-        setYearlyContribution('');
-        setExpectedReturn('');
-        setDuration('');
+    const handleCalculate = (currentSavings, yearlyContribution, expectedReturn, duration) => {
+        const yearlyData = [];
+
+        if (currentSavings !== 0 && yearlyContribution !== 0 && expectedReturn !== 0 && duration !== 0) {
+            setInitialInvestment(currentSavings);
+            let expectedReturnHolder = expectedReturn / 100;
+            for (let i = 0; i < duration; i++) {
+                let yearlyInterest = currentSavings * expectedReturnHolder;
+                currentSavings += yearlyInterest + yearlyContribution;
+                yearlyData.push({
+                    year: i + 1,
+                    yearlyInterest: yearlyInterest,
+                    savingsEndOfYear: currentSavings,
+                    yearlyContribution: yearlyContribution,
+                });
+            }
+            setResults(yearlyData);
+        };
     };
-
-    const handleCalculate = (userInput) => {
-        // Should be triggered when form is submitted
-        // You might not directly want to bind it to the submit event on the form though...
-        const yearlyData = []; // per-year results
-
-        // let currentSavings = +userInput['current-savings']; // feel free to change the shape of this input object!
-        // const yearlyContribution = +userInput['yearly-contribution']; // as mentioned: feel free to change the shape...
-        // const expectedReturn = +userInput['expected-return'] / 100;
-        // const duration = +userInput['duration'];
-
-        // The below code calculates yearly results (total savings, interest etc)
-        for (let i = 0; i < duration; i++) {
-            const yearlyInterest = currentSavings * expectedReturn;
-            currentSavings += yearlyInterest + yearlyContribution;
-            yearlyData.push({
-                // feel free to change the shape of the data pushed to the array!
-                year: i + 1,
-                yearlyInterest: yearlyInterest,
-                savingsEndOfYear: currentSavings,
-                yearlyContribution: yearlyContribution,
-            });
-        }
-
-        // console.log(yearlyData);
-        // do something with yearlyData ...
-    };
-
-    // useEffect(() => {
-    //     console.log(currentSavings);
-    //     console.log(yearlyContribution);
-    //     console.log(expectedReturn);
-    //     console.log(duration);
-    // }, [currentSavings, yearlyContribution, expectedReturn, duration]);
 
     return (
         <div>
             <Header/>
             <InputForm
-                currentSavings={currentSavings}
-                setCurrentSavings={setCurrentSavings}
-                yearlyContribution={yearlyContribution}
-                setYearlyContribution={setYearlyContribution}
-                expectedReturn={expectedReturn}
-                setExpectedReturn={setExpectedReturn}
-                duration={duration}
-                setDuration={setDuration}
-                handleReset={handleReset}
                 handleCalculate={handleCalculate}
+                setResults={setResults}
             />
-
-            {/* Todo: Show below table conditionally (only once result data is available) */}
-            {/* Show fallback text if no data is available */}
-            <ResultsTable/>
+            {results !== null ? (
+                <ResultsTable
+                    results={results}
+                    initialInvestment={initialInvestment}
+                />
+            ) : (
+                <h6 style={{ textAlign: 'center' }}>No investment calculated yet.</h6>
+            )}
         </div>
     );
 };

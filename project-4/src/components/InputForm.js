@@ -1,26 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 export default function InputForm({
-    currentSavings,
-    setCurrentSavings,
-    yearlyContribution,
-    setYearlyContribution,
-    expectedReturn,
-    setExpectedReturn,
-    duration,
-    setDuration,
-    handleReset,
-    handleCalculate
+    handleCalculate,
+    setResults
 }) {
 
+    const [currentSavings, setCurrentSavings] = useState(0);
+    const [yearlyContribution, setYearlyContribution] = useState(0);
+    const [expectedReturn, setExpectedReturn] = useState(0);
+    const [duration, setDuration] = useState(0);
+
+    const handleReset = () => {
+        setCurrentSavings(0);
+        setYearlyContribution(0);
+        setExpectedReturn(0);
+        setDuration(0);
+        setResults(null);
+    };
     const handleSetExpectedInterest = (e) => {
         const value = e.target.value;
-        setExpectedReturn(value / 100);
+        setExpectedReturn(value);
+    };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        handleCalculate(currentSavings, yearlyContribution, expectedReturn, duration);
     };
     
-
     return (
-        <form className="form">
+        <form className="form" onSubmit={handleSubmit}>
             <div className="input-group">
                 <p>
                     <label htmlFor="current-savings">Current Savings ($)</label>
@@ -67,7 +74,7 @@ export default function InputForm({
                 <button type="reset" className="buttonAlt" onClick={handleReset}>
                     Reset
                 </button>
-                <button type="submit" className="button" onClick={handleCalculate}>
+                <button type="submit" className="button">
                     Calculate
                 </button>
             </p>
