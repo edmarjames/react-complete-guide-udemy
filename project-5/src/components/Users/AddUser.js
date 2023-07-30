@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
@@ -8,6 +8,9 @@ import styles from './AddUser.module.css';
 
 export default function AddUser({ onAddUser }) {
 
+    const nameInputRef = useRef();
+    const ageInputRef = useRef();
+
     const [age, setAge] = useState('');
     const [username, setUsername] = useState('');
     const [error, setError] = useState();
@@ -15,24 +18,28 @@ export default function AddUser({ onAddUser }) {
     const handleReset = () => {
         setUsername('');
         setAge('');
+        nameInputRef.current.value = '';
+        ageInputRef.current.value = '';
     };
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (username.trim().length === 0 || age.trim().length === 0) {
+        const enteredName = nameInputRef.current.value;
+        const enteredAge = ageInputRef.current.value;
+        if (enteredName.trim().length === 0 || enteredAge.trim().length === 0) {
             setError({ 
                 title: 'Invalid input',
                 message: 'Please enter a valid name and age (non-empty values)'
             });
             return;
         }
-        if (+age < 1) {
+        if (+enteredAge < 1) {
             setError({ 
                 title: 'Invalid age',
                 message: 'Please enter a valid age (> 0)'
             });
             return;
         }
-        onAddUser(username, age);
+        onAddUser(enteredName, enteredAge);
         handleReset();
     };
     const handleChangeUsername = (event) => {
@@ -62,6 +69,7 @@ export default function AddUser({ onAddUser }) {
                         type='text' 
                         value={username}
                         onChange={handleChangeUsername}
+                        ref={nameInputRef}
                     />
                     <label htmlFor='age'>Age (Years)</label>
                     <input 
@@ -69,6 +77,7 @@ export default function AddUser({ onAddUser }) {
                         type='number'
                         value={age}
                         onChange={handleChangeAge}    
+                        ref={ageInputRef}
                     />
                     <Button type='submit'>Add User</Button>
                 </form>
