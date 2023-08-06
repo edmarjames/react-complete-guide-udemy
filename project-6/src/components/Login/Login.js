@@ -3,6 +3,7 @@ import React, { useState, useEffect, useReducer, useContext } from 'react';
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
+import InputField from './InputField';
 import AuthContext from '../../context/auth-context';
 
 const emailReducer = (state, action) => {
@@ -98,34 +99,24 @@ const Login = (props) => {
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${classes.control} ${
-            emailState.isValid === false ? classes.invalid : ''
-          }`}
-        >
-          <label htmlFor="email">E-Mail</label>
-          <input
-            type="email"
-            id="email"
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
-          />
-        </div>
-        <div
-          className={`${classes.control} ${
-            passwordState.isValid === false ? classes.invalid : ''
-          }`}
-        >
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={passwordState.value}
-            onChange={passwordChangeHandler}
-            onBlur={validatePasswordHandler}
-          />
-        </div>
+        <InputField
+          state={emailState}
+          label='E-Mail'
+          type='email'
+          id='email'
+          value={emailState.value}
+          onChangeHandler={emailChangeHandler}
+          onBlurHandler={validateEmailHandler}
+        />
+        <InputField
+          state={passwordState}
+          label='Password'
+          type='password'
+          id='password'
+          value={passwordState.value}
+          onChangeHandler={passwordChangeHandler}
+          onBlurHandler={validatePasswordHandler}
+        />
         <div className={classes.actions}>
           <Button type="submit" className={classes.btn} disabled={!formIsValid}>
             Login
