@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styles from './MealItem.module.css';
+import MealItemForm from './MealItemForm';
 
 export default function MealItem({name, description, price}) {
 
@@ -14,7 +15,7 @@ export default function MealItem({name, description, price}) {
                 <div className={styles.price}>{formattedPrice}</div>
             </div>
             <div>
-
+                <MealItemForm/>
             </div>
         </li>
     );
