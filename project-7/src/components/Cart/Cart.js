@@ -9,10 +9,6 @@ export default function Cart({ onClose }) {
 
     const { items, totalAmount, addItem, removeItem } = useContext(CartContext);
 
-    const dummyData = [
-        { id: 'c1', name: 'Sushi', amount: 2, price: 12.99}
-    ];
-
     const formattedTotalAmount = `$${totalAmount.toFixed(2)}`;
     const hasItems = items.length > 0;
     const cartItemRemoveHandler = (id) => {
